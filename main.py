@@ -1,10 +1,17 @@
 from flask import Flask, request, jsonify #added to top of file
 from flask_cors import CORS #added to top of file
 from db import *
+import os
+
+# Fetching the base URL from the environment variable
+api_url = os.getenv('API_URL')
+
+create_db_table()
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 @app.route('/api/users', methods=['GET'])
 def api_get_users():
+    print(f"Base URL is: {api_url}")
     return jsonify(get_users())
 @app.route('/api/users/<user_id>', methods=['GET'])
 def api_get_user(user_id):
@@ -23,4 +30,4 @@ def api_delete_user(user_id):
 if __name__ == "__main__":
 #app.debug = True
 #app.run(debug=True)
-    app.run() #run app
+    app.run(debug=True) #run app

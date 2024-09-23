@@ -26,14 +26,16 @@ def insert_user(user):
     inserted_user = {}
     try:
         conn = connect_to_db()
+        print(user)
         cur = conn.cursor()
         cur.execute("INSERT INTO users (name, email, phone, address,country) VALUES (?, ?, ?, ?, ?)", (user['name'],
         user['email'], user['phone'], user['address'],
-        user['country']))
+        user['country']))   
         conn.commit()
         inserted_user = get_user_by_id(cur.lastrowid)
-    except:
-        conn().rollback()
+    except Exception as e:
+        print(str(e))
+        conn.rollback()
     finally:
         conn.close()
     return inserted_user
